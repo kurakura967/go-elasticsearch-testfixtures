@@ -1,0 +1,13 @@
+{
+  "properties": {
+    "title": {
+      "type": "text"
+    },
+    "price": {
+      "type": "float"
+    },
+    "category": {
+      "type": "keyword"
+    }
+  }
+}

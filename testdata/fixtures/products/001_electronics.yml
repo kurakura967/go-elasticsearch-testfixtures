@@ -1,0 +1,9 @@
+- _id: "p1"
+  title: "Laptop"
+  price: 999.99
+  category: "electronics"
+
+- _id: "p2"
+  title: "Smartphone"
+  price: 699.99
+  category: "electronics"

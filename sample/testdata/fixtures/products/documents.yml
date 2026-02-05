@@ -1,0 +1,17 @@
+- _id: "p1"
+  title: "Laptop"
+  price: 999.99
+  category: "electronics"
+  in_stock: true
+
+- _id: "p2"
+  title: "Smartphone"
+  price: 699.99
+  category: "electronics"
+  in_stock: true
+
+- _id: "p3"
+  title: "Go Programming Language"
+  price: 39.99
+  category: "books"
+  in_stock: false

@@ -1,0 +1,16 @@
+{
+  "properties": {
+    "title": {
+      "type": "text"
+    },
+    "price": {
+      "type": "float"
+    },
+    "category": {
+      "type": "keyword"
+    },
+    "in_stock": {
+      "type": "boolean"
+    }
+  }
+}
