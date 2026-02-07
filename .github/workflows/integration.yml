@@ -1,0 +1,40 @@
+name: Integration Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  integration:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.25"
+
+      - name: Start Elasticsearch
+        run: make es-up
+
+      - name: Wait for Elasticsearch
+        run: make es-wait
+
+      - name: Download dependencies
+        run: make deps
+
+      - name: Run integration tests
+        env:
+          ELASTICSEARCH_URL: http://localhost:9200
+        run: make test-integration
+
+      - name: Stop Elasticsearch
+        if: always()
+        run: make es-down

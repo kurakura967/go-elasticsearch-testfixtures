@@ -1,5 +1,9 @@
 # go-elasticsearch-testfixtures
 
+[![Code Maintainability](https://github.com/kurakura967/go-elasticsearch-testfixtures/actions/workflows/code-maintainability.yaml/badge.svg)](https://github.com/kurakura967/go-elasticsearch-testfixtures/actions/workflows/code-maintainability.yaml)
+[![Integration Tests](https://github.com/kurakura967/go-elasticsearch-testfixtures/actions/workflows/integration.yml/badge.svg)](https://github.com/kurakura967/go-elasticsearch-testfixtures/actions/workflows/integration.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/kurakura967/go-elasticsearch-testfixtures.svg)](https://pkg.go.dev/github.com/kurakura967/go-elasticsearch-testfixtures)
+
 A Go library for loading Elasticsearch test fixtures in integration tests.
 Manage index mappings, settings, and test documents through a simple directory structure.
 
