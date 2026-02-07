@@ -57,6 +57,7 @@ func buildCreateIndexBody(mapping, settings json.RawMessage) ([]byte, error) {
 }
 
 // deleteIndex deletes an Elasticsearch index.
+// It ignores 404 errors (index not found) since the goal is to ensure the index doesn't exist.
 func deleteIndex(ctx context.Context, client *elasticsearch.Client, name string) error {
 	res, err := client.Indices.Delete(
 		[]string{name},
@@ -67,6 +68,11 @@ func deleteIndex(ctx context.Context, client *elasticsearch.Client, name string)
 		return fmt.Errorf("deleting index %q: %w", name, err)
 	}
 	defer res.Body.Close()
+
+	// Ignore 404 errors - the index may not exist, which is fine
+	if res.StatusCode == 404 {
+		return nil
+	}
 
 	if err := checkResponse(res); err != nil {
 		return fmt.Errorf("deleting index %q: %w", name, err)

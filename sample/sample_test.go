@@ -1,3 +1,5 @@
+//go:build integration
+
 package sample_test
 
 import (
@@ -60,7 +62,7 @@ func TestSearchUsers(t *testing.T) {
 
 	res, err := client.Search(
 		client.Search.WithContext(context.Background()),
-		client.Search.WithIndex("users"),
+		client.Search.WithIndex("sample_users"),
 		client.Search.WithBody(strings.NewReader(query)),
 	)
 	if err != nil {
@@ -101,7 +103,7 @@ func TestGetProductByID(t *testing.T) {
 	t.Cleanup(func() { fixtures.Clean() })
 
 	// Retrieve a specific product by its document ID
-	res, err := client.Get("products", "p1",
+	res, err := client.Get("sample_products", "p1",
 		client.Get.WithContext(context.Background()),
 	)
 	if err != nil {
@@ -140,7 +142,7 @@ func TestFilterProductsByCategory(t *testing.T) {
 
 	res, err := client.Search(
 		client.Search.WithContext(context.Background()),
-		client.Search.WithIndex("products"),
+		client.Search.WithIndex("sample_products"),
 		client.Search.WithBody(strings.NewReader(query)),
 	)
 	if err != nil {
@@ -171,7 +173,7 @@ func TestLoadResetsState(t *testing.T) {
 
 	// Insert an extra document manually
 	res, err := client.Index(
-		"users",
+		"sample_users",
 		strings.NewReader(`{"name": "Extra User", "email": "extra@example.com", "age": 99}`),
 		client.Index.WithContext(context.Background()),
 		client.Index.WithRefresh("true"),
@@ -189,7 +191,7 @@ func TestLoadResetsState(t *testing.T) {
 	// Count should be back to 3 (original fixture data only)
 	countRes, err := client.Count(
 		client.Count.WithContext(context.Background()),
-		client.Count.WithIndex("users"),
+		client.Count.WithIndex("sample_users"),
 	)
 	if err != nil {
 		t.Fatalf("counting documents: %v", err)

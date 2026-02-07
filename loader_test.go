@@ -12,31 +12,36 @@ import (
 	"github.com/elastic/go-elasticsearch/v8"
 )
 
-func setupTestClient(t *testing.T) *elasticsearch.Client {
-	t.Helper()
+var testClient *elasticsearch.Client
 
+func TestMain(m *testing.M) {
 	addr := os.Getenv("ELASTICSEARCH_URL")
 	if addr == "" {
 		addr = "http://localhost:9200"
 	}
 
-	client, err := elasticsearch.NewClient(elasticsearch.Config{
+	var err error
+	testClient, err = elasticsearch.NewClient(elasticsearch.Config{
 		Addresses: []string{addr},
 	})
 	if err != nil {
-		t.Fatalf("creating ES client: %v", err)
+		fmt.Printf("creating ES client: %v\n", err)
+		os.Exit(1)
 	}
 
-	res, err := client.Ping()
+	res, err := testClient.Ping()
 	if err != nil {
-		t.Skipf("Elasticsearch not available: %v", err)
+		fmt.Printf("Elasticsearch not available: %v\n", err)
+		os.Exit(1)
 	}
-	defer res.Body.Close()
-	if res.IsError() {
-		t.Skipf("Elasticsearch not available: %s", res.Status())
-	}
+	res.Body.Close()
 
-	return client
+	os.Exit(m.Run())
+}
+
+func setupTestClient(t *testing.T) *elasticsearch.Client {
+	t.Helper()
+	return testClient
 }
 
 // getDocCount returns the number of documents in the given index.
@@ -140,7 +145,7 @@ func TestLoadAndClean_BasicRoundTrip(t *testing.T) {
 		t.Fatalf("New() error: %v", err)
 	}
 
-	// Load fixtures
+	// Load fixtures (deletes existing indices first)
 	if err := loader.Load(); err != nil {
 		t.Fatalf("Load() error: %v", err)
 	}
