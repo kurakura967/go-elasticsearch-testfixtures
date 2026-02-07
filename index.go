@@ -30,7 +30,7 @@ func createIndex(ctx context.Context, client *elasticsearch.Client, name string,
 	if err != nil {
 		return fmt.Errorf("creating index %q: %w", name, err)
 	}
-	defer res.Body.Close()
+	defer func() { _ = res.Body.Close() }()
 
 	if err := checkResponse(res); err != nil {
 		return fmt.Errorf("creating index %q: %w", name, err)
@@ -67,7 +67,7 @@ func deleteIndex(ctx context.Context, client *elasticsearch.Client, name string)
 	if err != nil {
 		return fmt.Errorf("deleting index %q: %w", name, err)
 	}
-	defer res.Body.Close()
+	defer func() { _ = res.Body.Close() }()
 
 	// Ignore 404 errors - the index may not exist, which is fine
 	if res.StatusCode == 404 {
@@ -148,7 +148,7 @@ func refreshIndex(ctx context.Context, client *elasticsearch.Client, name string
 	if err != nil {
 		return fmt.Errorf("refreshing index %q: %w", name, err)
 	}
-	defer res.Body.Close()
+	defer func() { _ = res.Body.Close() }()
 
 	if err := checkResponse(res); err != nil {
 		return fmt.Errorf("refreshing index %q: %w", name, err)
